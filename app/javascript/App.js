@@ -5,6 +5,8 @@ import GameOverScreen from './GameOverScreen';
 import Photo from './Photo';
 import Timer from './Timer';
 
+import axios from "axios";
+
 const App = () => {
     const [selectedPhoto, setSelectedPhoto] = useState(0);
 
@@ -46,6 +48,7 @@ const App = () => {
     }
 
     function grabSubjectData(photo_id) {
+      axios
         .get(`api/photos/${photo_id}/subjects`)
         .then((response) => {
             const targetBoxes = response.data.included;
@@ -64,6 +67,7 @@ const App = () => {
     }
 
     function grabPhotoInfo(photo_id) {
+      axios
         .get(`api/v1/photos/${photo_id}/`)
         .then((response) => {
             if (response.data.data !== null) {
@@ -71,6 +75,16 @@ const App = () => {
             }
         })
         .catch((err) => console.log(err));
+    }
+
+    function tryCoords(name, x, y) {
+        const target = subjectData.filter((subj) => subj.name === name)[0];
+        const box = target.targetBox;
+        if(box.left <= x && box.right >= x && box.bottom <= y && box.top >= y) {
+            setFoundSubjects(founSubjects.concat(target));
+        } else {
+            console.log("nope! not" + name);
+        }
     }
 
     function displayFoundSubject(subject) {
