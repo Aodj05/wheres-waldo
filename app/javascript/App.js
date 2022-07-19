@@ -87,6 +87,14 @@ const App = () => {
         }
     }
 
+    function displayFoundCount(totalSubjects, foundSubhects) {
+        return (
+            <div className="display-found-count">
+              {`${founSubjects} / ${totalSubjects}`}
+            </div>
+        );
+    }
+
     function displayFoundSubject(subject) {
         return (
             <li className="found-subject" key={subject.id}>
